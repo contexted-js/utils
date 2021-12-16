@@ -1,6 +1,6 @@
 {
 	"name": "@contexted/utils",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Utilities for Contexted framework",
 	"keywords": [
 		"typescript",
@@ -26,7 +26,6 @@
 			"import": "./dist/strategy/index.mjs",
 			"require": "./dist/strategy/index.cjs"
 		},
-		
 		"./emitter": {
 			"import": "./dist/emitter/index.mjs",
 			"require": "./dist/emitter/index.cjs"
