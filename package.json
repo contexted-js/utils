@@ -1,6 +1,6 @@
 {
 	"name": "@contexted/utils",
-	"version": "0.0.1",
+	"version": "0.3.0",
 	"description": "Utilities for Contexted framework",
 	"keywords": [
 		"typescript",
