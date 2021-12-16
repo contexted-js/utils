@@ -25,6 +25,11 @@
 		"./strategy": {
 			"import": "./dist/strategy/index.mjs",
 			"require": "./dist/strategy/index.cjs"
+		},
+		
+		"./emitter": {
+			"import": "./dist/emitter/index.mjs",
+			"require": "./dist/emitter/index.cjs"
 		}
 	},
 	"scripts": {
