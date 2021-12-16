@@ -21,8 +21,14 @@
 		"url": "git+https://github.com/contexted-js/utils.git"
 	},
 	"type": "module",
+	"exports": {
+		"./strategy": {
+			"import": "./dist/strategy/index.mjs",
+			"require": "./dist/strategy/index.cjs"
+		}
+	},
 	"scripts": {
-		"build": "rimraf dist && rollup --config rollup.config.ts --configPlugin typescript && tsc",
+		"build": "rm -f -- *.d.ts && rimraf dist && rollup --config rollup.config.ts --configPlugin typescript && tsc && mv ./dist/*.d.ts ./",
 		"test": "jest"
 	},
 	"publishConfig": {

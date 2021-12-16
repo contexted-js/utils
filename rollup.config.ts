@@ -3,12 +3,12 @@ import { terser } from 'rollup-plugin-terser';
 import license from 'rollup-plugin-license';
 
 import { resolve } from 'path';
-import { readFile } from 'fs/promises';
+import { readFile, readdir } from 'fs/promises';
 
-async function generateConfiguration() {
+async function generateConfiguration(id) {
 	const banner = await readFile(resolve(__dirname, 'LICENSE'), 'utf-8');
 	return {
-		input: './src/index.ts',
+		input: `./src/${id}.ts`,
 		plugins: [
 			typescript(),
 			terser({ format: { comments: false } }),
@@ -16,15 +16,25 @@ async function generateConfiguration() {
 		],
 		output: [
 			{
-				file: 'dist/index.cjs',
+				file: `dist/${id}/index.cjs`,
 				format: 'cjs',
 			},
 			{
-				file: 'dist/index.mjs',
+				file: `dist/${id}/index.mjs`,
 				format: 'es',
 			},
 		],
 	};
 }
 
-export default generateConfiguration();
+async function readModules() {
+	const modules = await readdir(resolve(__dirname, 'src'));
+	const configs = [];
+
+	for (const module of modules)
+		configs.push(await generateConfiguration(module.replace('.ts', '')));
+
+	return configs;
+}
+
+export default readModules();
