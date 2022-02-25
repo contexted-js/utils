@@ -1,58 +1,46 @@
 import type {
-	Context,
-	Generator,
+	Transformer,
 	Controller,
 	Route,
 	Middleware,
-	AsyncReturn,
 } from '@contexted/core';
 
 export type StrategyController<
-	ContextType extends Context,
-	InjectablesType = any,
-	ImmutableContext extends boolean = false
+	Context,
+	Injectables,
+	IsImmutable extends boolean
 > =
-	| Controller<ContextType, InjectablesType, ImmutableContext>
-	| Middleware<ContextType, InjectablesType, ImmutableContext>;
+	| Controller<Context, Injectables, IsImmutable>
+	| Middleware<Context, Injectables, IsImmutable>;
 
 export type Strategy<
-	TestType,
-	ContextType extends Context,
-	InjectablesType = any,
-	ImmutableContext extends boolean = false
+	Test,
+	Context,
+	Injectables,
+	IsImmutable extends boolean
 > = {
-	test: TestType;
-	children?: Strategy<TestType, ContextType, InjectablesType>[];
-	controllers?: StrategyController<
-		ContextType,
-		InjectablesType,
-		ImmutableContext
-	>[];
+	test: Test;
+	children?: Strategy<Test, Context, Injectables, IsImmutable>[];
+	controllers?: StrategyController<Context, Injectables, IsImmutable>[];
 	injectables?: {
 		beforeControllers?: StrategyController<
-			ContextType,
-			InjectablesType,
-			ImmutableContext
+			Context,
+			Injectables,
+			IsImmutable
 		>[];
 		afterControllers?: StrategyController<
-			ContextType,
-			InjectablesType,
-			ImmutableContext
+			Context,
+			Injectables,
+			IsImmutable
 		>[];
 	};
 };
 
 function normalizeControllers<
-	ContextType extends Context,
-	InjectablesType = any,
-	ImmutableContext extends boolean = false
->(
-	...controllers: StrategyController<
-		ContextType,
-		InjectablesType,
-		ImmutableContext
-	>[]
-) {
+	Context,
+	Injectables,
+	IsImmutable extends boolean
+>(...controllers: StrategyController<Context, Injectables, IsImmutable>[]) {
 	return (controllers || []).map((prospect) =>
 		typeof prospect === 'function'
 			? {
@@ -64,28 +52,23 @@ function normalizeControllers<
 }
 
 async function extractRoutesFromStrategy<
-	TestType,
-	ContextType extends Context,
-	InjectablesType = any,
-	ImmutableContext extends boolean = false
+	Test,
+	Context,
+	Injectables,
+	IsImmutable extends boolean
 >(
-	strategy: Strategy<
-		TestType,
-		ContextType,
-		InjectablesType,
-		ImmutableContext
-	>,
-	testReducer: Generator<TestType[], TestType>,
-	parentTest?: TestType,
+	strategy: Strategy<Test, Context, Injectables, IsImmutable>,
+	testReducer: Transformer<Test[], Test>,
+	parentTest?: Test,
 	parentInjectables?: Strategy<
-		TestType,
-		ContextType,
-		InjectablesType,
-		ImmutableContext
+		Test,
+		Context,
+		Injectables,
+		IsImmutable
 	>['injectables']
 ) {
 	const test = await testReducer([parentTest, strategy.test]);
-	const routes: Route<TestType, ContextType, InjectablesType>[] = [];
+	const routes: Route<Test, Context, Injectables, IsImmutable>[] = [];
 
 	if (strategy.controllers && strategy.controllers.length > 0) {
 		routes.push({
@@ -133,22 +116,17 @@ async function extractRoutesFromStrategy<
 }
 
 export async function extractRoutes<
-	TestType,
-	ContextType extends Context,
-	InjectablesType = any,
-	ImmutableContext extends boolean = false
+	Test,
+	Context,
+	Injectables,
+	IsImmutable extends boolean
 >(
 	...strategies: {
-		strategy: Strategy<
-			TestType,
-			ContextType,
-			InjectablesType,
-			ImmutableContext
-		>;
-		testReducer: Generator<TestType[], TestType>;
+		strategy: Strategy<Test, Context, Injectables, IsImmutable>;
+		testReducer: Transformer<Test[], Test>;
 	}[]
 ) {
-	const routes: Route<TestType, ContextType, InjectablesType>[] = [];
+	const routes: Route<Test, Context, Injectables, IsImmutable>[] = [];
 
 	for (const prospect of strategies || [])
 		routes.push(

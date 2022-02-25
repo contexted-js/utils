@@ -12,7 +12,7 @@
 		"strategy"
 	],
 	"engines": {
-		"node": ">=0.10.0"
+		"node": ">=0.12.0"
 	},
 	"license": "MIT",
 	"author": "https://github.com/contexted-js",
@@ -42,7 +42,7 @@
 		"@babel/core": "^7.16.5",
 		"@babel/preset-env": "^7.16.5",
 		"@babel/preset-typescript": "^7.16.5",
-		"@contexted/core": "^2.1.1",
+		"@contexted/core": "^3.0.2",
 		"@rollup/plugin-typescript": "^8.3.0",
 		"@types/jest": "^27.0.3",
 		"babel-jest": "^27.4.5",

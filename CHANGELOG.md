@@ -16,6 +16,18 @@
 
 ---
 
+## **1.0.0** - 2021-12-18
+
+### Added
+
+-   Sequential traverser
+
+### Updated
+
+-   Event Emitters
+
+---
+
 ## **0.3.0** - 2021-12-17
 
 ### Added

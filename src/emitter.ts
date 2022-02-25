@@ -1,82 +1,47 @@
-import type { Generator, AsyncReturn } from '@contexted/core';
+import type { Transformer } from '@contexted/core';
 
-export class EventEmitter<RequestType, ResponseType> {
-	private subscribers: {
-		[test: string]: Generator<RequestType, ResponseType>;
-	};
+export class EventEmitter<Test, Request, Response> {
+	private subscribers: Map<Test, Transformer<Request, Response>>;
 
 	constructor() {
-		this.subscribers = {};
+		this.subscribers = new Map();
 	}
 
-	subscribe(test: string, handler: Generator<RequestType, ResponseType>) {
-		if (this.subscribers[test]) return null;
+	subscribe(test: Test, handler: Transformer<Request, Response>) {
+		try {
+			if (this.subscribers.has(test))
+				throw new Error(
+					'a handler has already been registered for this test inside event emitter map.'
+				);
 
-		let uniqueFlag = true;
-		this.subscribers[test] = handler;
+			this.subscribers.set(test, handler);
 
-		return () => {
-			if (!this.subscribers[test] || !uniqueFlag) return false;
-
-			delete this.subscribers[test];
-			const success = !this.subscribers[test];
-
-			if (success) uniqueFlag = false;
-
-			return success;
-		};
+			return () => {
+				try {
+					const result = this.subscribers.delete(test);
+					if (!result)
+						throw new Error(
+							'failed to delete element from event emitter map.'
+						);
+				} catch (error) {
+					throw error;
+				}
+			};
+		} catch (error) {
+			throw error;
+		}
 	}
 
-	async emit(test: string, request?: RequestType) {
-		return this.subscribers[test]
-			? await this.subscribers[test](request)
-			: null;
+	async emit(test: Test, request?: Request) {
+		if (!this.subscribers.has(test))
+			throw new Error(
+				'no subscriber with matching test registered in event emitter.'
+			);
+
+		return await this.subscribers.get(test)(request);
 	}
 }
 
-export class CustomEventEmitter<TestType, RequestType, ResponseType> {
-	private subscribers: {
-		test: TestType;
-		handler: Generator<RequestType, ResponseType>;
-	}[];
-
-	constructor(
-		private compare: (
-			prospect: TestType,
-			target: TestType
-		) => AsyncReturn<boolean>
-	) {
-		this.subscribers = [];
-	}
-
-	subscribe(
-		test: TestType,
-		handler: Generator<RequestType, ResponseType>,
-		overwrite = false
-	) {
-		if (!overwrite)
-			for (const subscriber of this.subscribers)
-				if (this.compare(subscriber.test, test)) return null;
-
-		const result = { test, handler };
-		let uniqueFlag = true;
-		this.subscribers.push(result);
-
-		return () => {
-			if (this.subscribers.indexOf(result) > -1 && uniqueFlag) {
-				this.subscribers.splice(this.subscribers.indexOf(result), 1);
-				uniqueFlag = false;
-				return true;
-			}
-
-			return false;
-		};
-	}
-
-	async emit(test: TestType, request?: RequestType) {
-		for (const subscriber of this.subscribers)
-			if (this.compare(subscriber.test, test))
-				return await subscriber.handler(request);
-		return null;
-	}
+export function createEventEmitter<Test, Request, Response>() {
+	return new EventEmitter<Test, Request, Response>();
 }

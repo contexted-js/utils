@@ -1,51 +1,95 @@
-import type { Context as ContextedContext } from '@contexted/core';
+import type { Transformer } from '@contexted/core';
 
 import { Contexted } from '@contexted/core';
-import { EventEmitter, CustomEventEmitter } from '../src/emitter';
 
-type Test = { content: string };
-type Context = ContextedContext & { content: string };
+import { EventEmitter } from '../src/emitter';
+import { createTraverser } from '../src/traverser';
 
-test('subscribe and unsubscribe for string event emitter', async () => {
-	const requestContent = { content: 'REQUEST', next: true };
+type Injectables = never;
+type Context = { content: string };
 
-	const emitter = new EventEmitter<Context, Context>();
-	const application = new Contexted<string, Context>({
-		subscriber: (test, handler) => emitter.subscribe(test, handler),
-	});
+const transformer: Transformer<Context, Context> = (context) => context;
 
-	const unsubscriber = await application.subscribeRoute({
-		test: 'print',
-		controllers: [{ middleware: (request: Context) => request }],
-	});
-
-	expect(await emitter.emit('print', requestContent)).toStrictEqual(
-		requestContent
-	);
-
-	await unsubscriber();
-	expect(await emitter.emit('print', requestContent)).toBeNull();
+const traverser = createTraverser<Context, Injectables, true, false>({
+	isImmutable: true,
 });
 
-test('subscribe and unsubscribe for custom event emitter', async () => {
+describe('emitter', () => {
 	const requestContent = { content: 'REQUEST', next: true };
 
-	const emitter = new CustomEventEmitter<Test, Context, Context>(
-		(prospect: Test, target: Test) => prospect.content === target.content
-	);
-	const application = new Contexted<Test, Context>({
-		subscriber: (test, handler) => emitter.subscribe(test, handler),
+	test('subscribe, unsubscribe and duplicated test cases for map emitter with string test', async () => {
+		const emitter = new EventEmitter<string, Context, Context>();
+		const application = new Contexted<
+			string,
+			Context,
+			never,
+			Context,
+			Context,
+			true
+		>({
+			subscriber: (test, handler) => emitter.subscribe(test, handler),
+			traverser,
+			requestTransformer: transformer,
+			responseTransformer: transformer,
+		});
+
+		const unsubscriber = await application.subscribeRoute({
+			test: 'print',
+			controllers: [{ middleware: (request: Context) => request }],
+		});
+
+		expect(await emitter.emit('print', requestContent)).toStrictEqual(
+			requestContent
+		);
+
+		await expect(
+			application.subscribeRoute({
+				test: 'print',
+				controllers: [{ middleware: (request: Context) => request }],
+			})
+		).rejects.toThrow();
+
+		await unsubscriber();
+		await expect(emitter.emit('print', requestContent)).rejects.toThrow();
 	});
 
-	const unsubscriber = await application.subscribeRoute({
-		test: { content: 'print' },
-		controllers: [{ middleware: (request: Context) => request }],
+	test('subscribe, unsubscribe and duplicated test cases for map emitter with custom test', async () => {
+		type Test = { label: string };
+
+		const key: Test = { label: 'CUSTOM-KEY' };
+
+		const emitter = new EventEmitter<Test, Context, Context>();
+		const application = new Contexted<
+			Test,
+			Context,
+			never,
+			Context,
+			Context,
+			true
+		>({
+			subscriber: (test, handler) => emitter.subscribe(test, handler),
+			traverser,
+			requestTransformer: transformer,
+			responseTransformer: transformer,
+		});
+
+		const unsubscriber = await application.subscribeRoute({
+			test: key,
+			controllers: [{ middleware: (request: Context) => request }],
+		});
+
+		expect(await emitter.emit(key, requestContent)).toStrictEqual(
+			requestContent
+		);
+
+		await expect(
+			application.subscribeRoute({
+				test: key,
+				controllers: [{ middleware: (request: Context) => request }],
+			})
+		).rejects.toThrow();
+
+		await unsubscriber();
+		await expect(emitter.emit(key, requestContent)).rejects.toThrow();
 	});
-
-	expect(await emitter.emit({ content: 'print' }, requestContent)).toStrictEqual(
-		requestContent
-	);
-
-	await unsubscriber();
-	expect(await emitter.emit({ content: 'print' }, requestContent)).toBeNull();
 });

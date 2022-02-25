@@ -30,6 +30,7 @@
 ## Table of Contents
 
 -   [Overview](#overview)
+-   [Documentations](#documentations)
 -   [Version History](#version-history)
 -   [Contributing](#contributing)
 -   [License](#license)
@@ -42,6 +43,10 @@ Included submodules:
 
 -   `strategy`: Complex routing strategy
 -   `emitter`: Event emitters
+
+## Documentations
+
+Please refer to [Documentations Page](docs/)
 
 ## Version History
 
@@ -63,4 +68,3 @@ Don't forget to give the project a star! Thanks again!
 ## License
 
 Distributed under the MIT License. See [LICENSE file](LICENSE) for more information.
-
