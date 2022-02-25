@@ -41,8 +41,9 @@
 
 Included submodules:
 
+-   `traverser`: Sequential traverser with **mutability** and **next flag** support
+-   `emitter`: Test based event emitter
 -   `strategy`: Complex routing strategy
--   `emitter`: Event emitters
 
 ## Documentations
 
