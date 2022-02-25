@@ -33,8 +33,7 @@
 	},
 	"scripts": {
 		"build": "rm -f -- *.d.ts && rimraf dist && rollup --config rollup.config.ts --configPlugin typescript && tsc && mv ./dist/*.d.ts ./",
-		"test": "jest",
-		"publish": "np"
+		"test": "jest"
 	},
 	"publishConfig": {
 		"access": "public"
@@ -48,7 +47,6 @@
 		"@types/jest": "^27.0.3",
 		"babel-jest": "^27.4.5",
 		"jest": "^27.4.5",
-		"np": "^7.6.0",
 		"rimraf": "^3.0.2",
 		"rollup": "^2.61.1",
 		"rollup-plugin-license": "^2.6.0",
