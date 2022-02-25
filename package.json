@@ -33,7 +33,8 @@
 	},
 	"scripts": {
 		"build": "rm -f -- *.d.ts && rimraf dist && rollup --config rollup.config.ts --configPlugin typescript && tsc && mv ./dist/*.d.ts ./",
-		"test": "jest"
+		"test": "jest",
+		"publish": "np"
 	},
 	"publishConfig": {
 		"access": "public"
