@@ -21,7 +21,7 @@
 -   [Installation](installation.md)
 -   [Modules](modules/README.md)
     -   [Traverser](modules/traverser.md)
-    -   [Emitter](modules/emitter.md)
+    -   [Emitters](modules/emitters.md)
     -   [Strategy](modules/strategy.md)
 
 ---

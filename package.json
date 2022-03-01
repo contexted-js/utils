@@ -6,6 +6,7 @@
 		"typescript",
 		"javascript",
 		"contexted",
+		"traverser",
 		"event",
 		"emitter",
 		"route",
@@ -22,13 +23,17 @@
 	},
 	"type": "module",
 	"exports": {
-		"./strategy": {
-			"import": "./dist/strategy/index.mjs",
-			"require": "./dist/strategy/index.cjs"
+		"./traverser": {
+			"import": "./dist/traverser/index.mjs",
+			"require": "./dist/traverser/index.cjs"
 		},
 		"./emitter": {
 			"import": "./dist/emitter/index.mjs",
 			"require": "./dist/emitter/index.cjs"
+		},
+		"./strategy": {
+			"import": "./dist/strategy/index.mjs",
+			"require": "./dist/strategy/index.cjs"
 		}
 	},
 	"scripts": {
