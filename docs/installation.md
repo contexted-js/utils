@@ -88,7 +88,7 @@ import { extractRoutes } from '@contexted/utils/strategy';
 
 ### Installation
 
-`@contexted/utils` package is available on [unpkg CDN](https://unpkg.com/@contexted/core) for in-browser implementations:
+`@contexted/utils` package is available on unpkg CDN for in-browser implementations:
 
 ```html
 <script src="unpkg.com/@contexted/utils/dist/transformer"></script>
