@@ -16,6 +16,12 @@
 
 ---
 
+## **1.1.0** - 2022-03-24
+
+### Added
+
+-   Three transformers: Echo, Wrapper and Extractor
+
 ## **1.0.0** - 2021-12-18
 
 ### Added

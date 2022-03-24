@@ -18,6 +18,9 @@
 
 ## Table of Contents
 
+-   [Transformer](transformer.md)
+    -   [Explain](traverser.md#explain)
+    -   [Example](traverser.md#example)
 -   [Traverser](traverser.md)
     -   [Explain](traverser.md#explain)
     -   [Example](traverser.md#example)
@@ -34,4 +37,4 @@
 [Installation](../installation.md)
 
 Next Page >
-[Traverser](traverser.md)
+[Transformer](transformer.md)

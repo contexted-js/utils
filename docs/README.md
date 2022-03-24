@@ -20,6 +20,7 @@
 
 -   [Installation](installation.md)
 -   [Modules](modules/README.md)
+    -   [Transformer](modules/transformer.md)
     -   [Traverser](modules/traverser.md)
     -   [Emitters](modules/emitters.md)
     -   [Strategy](modules/strategy.md)

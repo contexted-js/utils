@@ -41,6 +41,7 @@
 
 Included submodules:
 
+-   `transformer`: Three different data transformers: **Echo**, **Wrapper** and **Extractor**
 -   `traverser`: Sequential traverser with **mutability** and **next flag** support
 -   `emitter`: Test based event emitter
 -   `strategy`: Complex routing strategy
