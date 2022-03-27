@@ -91,15 +91,15 @@ import { extractRoutes } from '@contexted/utils/strategy';
 `@contexted/utils` package is available on unpkg CDN for in-browser implementations:
 
 ```html
-<script src="unpkg.com/@contexted/utils/dist/transformer"></script>
-<script src="unpkg.com/@contexted/utils/dist/traverser"></script>
-<script src="unpkg.com/@contexted/utils/dist/emitter"></script>
-<script src="unpkg.com/@contexted/utils/dist/strategy"></script>
+<script src="https://unpkg.com/@contexted/utils/dist/transformer"></script>
+<script src="https://unpkg.com/@contexted/utils/dist/traverser"></script>
+<script src="https://unpkg.com/@contexted/utils/dist/emitter"></script>
+<script src="https://unpkg.com/@contexted/utils/dist/strategy"></script>
 ```
 
 ### Usage
 
-After loading the script, exported objects will append to the [Window](https://developer.mozilla.org/en-US/docs/Web/API/Window) object:
+After loading the script, exported objects will append to the [DOM Window](https://developer.mozilla.org/en-US/docs/Web/API/Window) using `ContextUtils` object:
 
 ```html
 <script>
