@@ -23,25 +23,33 @@
 	},
 	"type": "module",
 	"exports": {
-		"transformer": {
+		"./transformer": {
 			"types": "./dist/transformer.d.ts",
 			"import": "./dist/transformer/index.mjs",
 			"require": "./dist/transformer/index.cjs"
 		},
-		"traverser": {
+		"./traverser": {
 			"types": "./dist/traverser.d.ts",
 			"import": "./dist/traverser/index.mjs",
 			"require": "./dist/traverser/index.cjs"
 		},
-		"emitter": {
+		"./emitter": {
 			"types": "./dist/emitter.d.ts",
 			"import": "./dist/emitter/index.mjs",
 			"require": "./dist/emitter/index.cjs"
 		},
-		"strategy": {
+		"./strategy": {
 			"types": "./dist/strategy.d.ts",
 			"import": "./dist/strategy/index.mjs",
 			"require": "./dist/strategy/index.cjs"
+		}
+	},
+	"typesVersions": {
+		"*": {
+			"transformer": ["./dist/transformer.d.ts"],
+			"traverser": ["./dist/traverser.d.ts"],
+			"emitter": ["./dist/emitter.d.ts"],
+			"strategy": ["./dist/strategy.d.ts"]
 		}
 	},
 	"scripts": {
